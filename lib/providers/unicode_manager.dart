@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 var logger = Logger();
 
@@ -7,13 +8,22 @@ class UnicodeManager with ChangeNotifier {
   double _uniFontSize = 20;
   double get uniFontSize => _uniFontSize;
 
-  void increaseFontSize() {
-    _uniFontSize = _uniFontSize + 2.0;
+  void setFontSize() async {
+    final prefs = await SharedPreferences.getInstance();
+    _uniFontSize = prefs.getDouble('fontSize') ?? 25;
+  }
+
+  void increaseFontSize() async {
+    _uniFontSize = _uniFontSize > 60 ? 60 : _uniFontSize + 2.0;
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setDouble('fontSize', _uniFontSize);
     notifyListeners();
   }
 
-  void decreaseFontSize() {
-    _uniFontSize = _uniFontSize - 2.0;
+  void decreaseFontSize() async {
+    _uniFontSize = _uniFontSize < 18 ? 18 : _uniFontSize - 2.0;
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setDouble('fontSize', _uniFontSize);
     notifyListeners();
   }
 

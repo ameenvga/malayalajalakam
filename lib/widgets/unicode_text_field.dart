@@ -16,9 +16,14 @@ class _UnicodeTextFieldState extends State<UnicodeTextField> {
     super.initState();
   }
 
+  void setFontSize(UnicodeManager unicodeManager) {
+    unicodeManager.setFontSize();
+  }
+
   @override
   Widget build(BuildContext context) {
     final UnicodeManager unicodeManager = Provider.of<UnicodeManager>(context);
+    setFontSize(unicodeManager);
     return TextField(
       autofocus: true,
       onChanged: (value) {

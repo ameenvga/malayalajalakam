@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import '../providers/file_manager.dart';
+import '../widgets/top_tool_bar.dart';
 import '../widgets/unicode_text_field.dart';
 import 'package:provider/provider.dart';
 import '../providers/unicode_manager.dart';
 import '../providers/malayalam_manager.dart';
-import '../widgets/normal_button.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -56,120 +54,19 @@ class WorkArea extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    unicodeManager.increaseFontSize();
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.remove),
-                  onPressed: () {
-                    unicodeManager.decreaseFontSize();
-                  },
-                ),
-                NormalButton(
-                  title: 'Show FML',
-                  onPressed: () {
-                    var text = unicodeManager.unicodeTextContent;
-                    malayalamManager.updateFmlText(text);
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Container(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              child: AlertDialog(
-                                title: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.5,
-                                    child: Text('Converted FML Text')),
-                                content: TextField(
-                                  maxLines: 20,
-                                  minLines: 5,
-                                  controller: TextEditingController(
-                                      text: malayalamManager.fmlTextContent),
-                                  style: Theme.of(context).textTheme.headline1,
-                                ),
-                                actions: [
-                                  NormalButton(
-                                    title: 'Close me!',
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  )
-                                ],
-                              ));
-                        });
-                  },
-                ),
-                NormalButton(
-                  title: '> FML',
-                  onPressed: () {
-                    try {
-                      var text = unicodeManager.unicodeTextContent;
-                      malayalamManager.updateFmlText(text);
-                      Clipboard.setData(ClipboardData(
-                        text: malayalamManager.fmlTextContent,
-                      ));
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                        'Successfully copied the FML version!',
-                        textAlign: TextAlign.center,
-                      )));
-                    } on Exception catch (_) {
-                      print(_);
-                    }
-                  },
-                ),
-                NormalButton(
-                  title: '> MLKV',
-                  onPressed: () {
-                    try {
-                      var text = unicodeManager.unicodeTextContent;
-                      malayalamManager.updateFmlText(text);
-                      Clipboard.setData(ClipboardData(
-                        text: malayalamManager.mlkvTextContent,
-                      ));
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                        'Successfully copied the MLKV version!',
-                        textAlign: TextAlign.center,
-                      )));
-                    } on Exception catch (_) {
-                      print(_);
-                    }
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.save),
-                  onPressed: () async {
-                    var text = unicodeManager.unicodeTextContent;
-                    await Provider.of<FileManager>(context, listen: false)
-                        .saveThisFileToSharedPref(text);
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.refresh),
-                  onPressed: () async {
-                    await Provider.of<FileManager>(context, listen: false)
-                        .reloadFile();
-                  },
-                )
-              ],
-            ),
-          ),
+          TopToolBar(
+              unicodeManager: unicodeManager,
+              malayalamManager: malayalamManager),
           Container(
             height: screenHeight * 0.8,
             color: Colors.white,
             padding: EdgeInsets.all(screenWidth * 0.05),
             child: UnicodeTextField(),
           ),
+          Text(
+            'Developed by ameenvengara@gmail.com',
+            textAlign: TextAlign.center,
+          )
         ],
       ),
     );
