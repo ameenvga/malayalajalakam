@@ -9,8 +9,10 @@ class FileManager with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> reloadFile() async {
+  Future<String> reloadFile() async {
     final prefs = await SharedPreferences.getInstance();
     final text = prefs.getString('first') ?? 'No text available!';
+    notifyListeners();
+    return text;
   }
 }

@@ -2,19 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:malayalajalakam/providers/unicode_manager.dart';
 import 'package:provider/provider.dart';
 
-class UnicodeTextField extends StatefulWidget {
-  @override
-  _UnicodeTextFieldState createState() => _UnicodeTextFieldState();
-}
+class UnicodeTextField extends StatelessWidget {
+  final TextEditingController uniController;
 
-class _UnicodeTextFieldState extends State<UnicodeTextField> {
-  TextEditingController uniController;
-
-  @override
-  void initState() {
-    uniController = TextEditingController();
-    super.initState();
-  }
+  UnicodeTextField(this.uniController);
 
   void setFontSize(UnicodeManager unicodeManager) {
     unicodeManager.setFontSize();

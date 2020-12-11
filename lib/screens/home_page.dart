@@ -18,18 +18,23 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    AppBar appBar = AppBar(
+      leading: Icon(Icons.ac_unit),
+      title: Text('MalayalaJalakam'),
+      actions: [],
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        leading: Icon(Icons.ac_unit),
-        title: Text('MalayalaJalakam'),
-        actions: [],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Container(
+          height: screenHeight,
+          width: screenWidth,
           padding: EdgeInsets.all(10.0),
           color: Colors.black12,
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [WorkArea()],
@@ -40,7 +45,14 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class WorkArea extends StatelessWidget {
+class WorkArea extends StatefulWidget {
+  @override
+  _WorkAreaState createState() => _WorkAreaState();
+}
+
+class _WorkAreaState extends State<WorkArea> {
+  final uniController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -55,16 +67,17 @@ class WorkArea extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TopToolBar(
+              uniController: uniController,
               unicodeManager: unicodeManager,
               malayalamManager: malayalamManager),
           Container(
             height: screenHeight * 0.8,
             color: Colors.white,
             padding: EdgeInsets.all(screenWidth * 0.05),
-            child: UnicodeTextField(),
+            child: UnicodeTextField(uniController),
           ),
           Text(
-            'Developed by ameenvengara@gmail.com',
+            'Developed by ameenvengara@gmail.com | www.malayalam-addon.blogspot.com for desktop version',
             textAlign: TextAlign.center,
           )
         ],

@@ -9,12 +9,14 @@ import 'normal_button.dart';
 
 class TopToolBar extends StatelessWidget {
   TopToolBar({
+    this.uniController,
     @required this.unicodeManager,
     @required this.malayalamManager,
   });
 
   final UnicodeManager unicodeManager;
   final MalayalamManager malayalamManager;
+  final TextEditingController uniController;
 
   @override
   Widget build(BuildContext context) {
@@ -118,8 +120,10 @@ class TopToolBar extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () async {
-              await Provider.of<FileManager>(context, listen: false)
-                  .reloadFile();
+              String text =
+                  await Provider.of<FileManager>(context, listen: false)
+                      .reloadFile();
+              uniController.text = text;
             },
           )
         ],

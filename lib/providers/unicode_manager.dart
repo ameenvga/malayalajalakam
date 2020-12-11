@@ -6,11 +6,13 @@ var logger = Logger();
 
 class UnicodeManager with ChangeNotifier {
   double _uniFontSize = 20;
+
   double get uniFontSize => _uniFontSize;
 
   void setFontSize() async {
     final prefs = await SharedPreferences.getInstance();
     _uniFontSize = prefs.getDouble('fontSize') ?? 25;
+    notifyListeners();
   }
 
   void increaseFontSize() async {
