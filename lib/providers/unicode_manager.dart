@@ -6,6 +6,7 @@ var logger = Logger();
 class UnicodeManager with ChangeNotifier {
   double _uniFontSize = 20;
   double get uniFontSize => _uniFontSize;
+
   void increaseFontSize() {
     _uniFontSize = _uniFontSize + 2.0;
     notifyListeners();
@@ -557,6 +558,11 @@ class UnicodeManager with ChangeNotifier {
 
   String _unicodeText = '';
 
+  String getUnicodeText() {
+    notifyListeners();
+    return _unicodeText;
+  }
+
   String get unicodeTextContent => _unicodeText;
 
   String replaceRange(
@@ -572,10 +578,9 @@ class UnicodeManager with ChangeNotifier {
   }
 
   void updateUnicodeText(TextEditingController unicodeController) {
-    // logger.e(unicodeController.text);
-
+    print('updateUnicodeText');
     //get the whole text and get the current caret position
-    String unicodeText = unicodeController.text;
+    _unicodeText = unicodeController.text;
     int caretPos = unicodeController.selection.baseOffset;
 
     int newCaretPos; //using to get the later position
@@ -583,14 +588,14 @@ class UnicodeManager with ChangeNotifier {
     //select the last five letters and search for the combination
     for (var i = 5; i > 0; i--) {
       try {
-        var searchLetter = unicodeText.substring(caretPos - i, caretPos);
+        var searchLetter = _unicodeText.substring(caretPos - i, caretPos);
         // print(unicodeText.substring(caretPos - i, caretPos));
         //if found a combination remove that much letters from the string and..
         if (uniReference['letters'].containsKey(searchLetter)) {
           String resultLetter = uniReference['letters'][searchLetter];
 
-          unicodeText =
-              replaceRange(unicodeText, caretPos - i, caretPos, resultLetter);
+          _unicodeText =
+              replaceRange(_unicodeText, caretPos - i, caretPos, resultLetter);
           // unicodeText =
           //     unicodeText.replaceAll("‌", ""); //removing all invisible break
           //getting the new caret position
@@ -604,7 +609,7 @@ class UnicodeManager with ChangeNotifier {
     try {
       if (newCaretPos != null) {
         unicodeController.value = unicodeController.value.copyWith(
-          text: unicodeText,
+          text: _unicodeText,
           composing: TextRange.empty,
           selection:
               TextSelection(baseOffset: newCaretPos, extentOffset: newCaretPos),

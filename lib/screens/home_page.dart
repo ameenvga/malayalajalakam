@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:malayalajalakam/providers/file_manager.dart';
+import '../providers/file_manager.dart';
+import '../widgets/unicode_text_field.dart';
 import 'package:provider/provider.dart';
-import 'package:malayalajalakam/providers/unicode_manager.dart';
+import '../providers/unicode_manager.dart';
 import '../providers/malayalam_manager.dart';
 import '../widgets/normal_button.dart';
 
@@ -12,11 +13,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  TextEditingController _uniController;
-
   @override
   void initState() {
-    _uniController = TextEditingController();
     super.initState();
   }
 
@@ -36,7 +34,7 @@ class _HomePageState extends State<HomePage> {
           width: MediaQuery.of(context).size.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [WorkArea(_uniController)],
+            children: [WorkArea()],
           ),
         ),
       ),
@@ -45,9 +43,6 @@ class _HomePageState extends State<HomePage> {
 }
 
 class WorkArea extends StatelessWidget {
-  final uniController;
-
-  const WorkArea(this.uniController);
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -80,8 +75,8 @@ class WorkArea extends StatelessWidget {
                 NormalButton(
                   title: 'Show FML',
                   onPressed: () {
-                    print(uniController.text);
-                    malayalamManager.updateFmlText(uniController.text);
+                    var text = unicodeManager.unicodeTextContent;
+                    malayalamManager.updateFmlText(text);
                     showDialog(
                         context: context,
                         builder: (context) {
@@ -115,7 +110,8 @@ class WorkArea extends StatelessWidget {
                   title: '> FML',
                   onPressed: () {
                     try {
-                      malayalamManager.updateFmlText(uniController.text);
+                      var text = unicodeManager.unicodeTextContent;
+                      malayalamManager.updateFmlText(text);
                       Clipboard.setData(ClipboardData(
                         text: malayalamManager.fmlTextContent,
                       ));
@@ -134,7 +130,8 @@ class WorkArea extends StatelessWidget {
                   title: '> MLKV',
                   onPressed: () {
                     try {
-                      malayalamManager.updateFmlText(uniController.text);
+                      var text = unicodeManager.unicodeTextContent;
+                      malayalamManager.updateFmlText(text);
                       Clipboard.setData(ClipboardData(
                         text: malayalamManager.mlkvTextContent,
                       ));
@@ -152,17 +149,16 @@ class WorkArea extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.save),
                   onPressed: () async {
+                    var text = unicodeManager.unicodeTextContent;
                     await Provider.of<FileManager>(context, listen: false)
-                        .saveThisFileToSharedPref(uniController.text);
+                        .saveThisFileToSharedPref(text);
                   },
                 ),
                 IconButton(
                   icon: Icon(Icons.refresh),
                   onPressed: () async {
-                    var result =
-                        await Provider.of<FileManager>(context, listen: false)
-                            .reloadFile();
-                    uniController.text = result;
+                    await Provider.of<FileManager>(context, listen: false)
+                        .reloadFile();
                   },
                 )
               ],
@@ -172,103 +168,10 @@ class WorkArea extends StatelessWidget {
             height: screenHeight * 0.8,
             color: Colors.white,
             padding: EdgeInsets.all(screenWidth * 0.05),
-            child: TextField(
-              autofocus: true,
-              onChanged: (value) {
-                unicodeManager.updateUnicodeText(uniController);
-              },
-              controller: uniController,
-              maxLines: 25,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                filled: true,
-                fillColor: Colors.white70,
-              ),
-              readOnly: false,
-              cursorColor: Colors.blue,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline2
-                  .copyWith(fontSize: unicodeManager.uniFontSize),
-            ),
+            child: UnicodeTextField(),
           ),
         ],
       ),
     );
   }
 }
-
-// class RightSideArea extends StatelessWidget {
-//   final TextEditingController uniController;
-
-//   RightSideArea(this.uniController);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final malayalamManager = Provider.of<MalayalamManager>(context);
-//     return Container(
-//       // width: MediaQuery.of(context).size.width * 0.16,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         children: [
-//           NormalButton(
-//             title: 'Show FML',
-//             onPressed: () {
-//               print('asdfasdf');
-//               print(uniController.text);
-//               malayalamManager.updateFmlText(uniController.text);
-//               showDialog(
-//                   context: context,
-//                   builder: (context) {
-//                     return Container(
-//                         width: MediaQuery.of(context).size.width * 0.5,
-//                         child: AlertDialog(
-//                           title: Container(
-//                               width: MediaQuery.of(context).size.width * 0.5,
-//                               child: Text('Converted FML Text')),
-//                           content: TextField(
-//                             maxLines: 20,
-//                             minLines: 5,
-//                             controller: TextEditingController(
-//                                 text: malayalamManager.fmlTextContent),
-//                             style: Theme.of(context).textTheme.headline1,
-//                           ),
-//                           actions: [
-//                             NormalButton(
-//                               title: 'Close me!',
-//                               onPressed: () {
-//                                 Navigator.of(context).pop();
-//                               },
-//                             )
-//                           ],
-//                         ));
-//                   });
-//             },
-//           ),
-//           NormalButton(
-//             title: 'Copy to FML',
-//             onPressed: () {
-//               malayalamManager.updateFmlText(uniController.text);
-//               Clipboard.setData(ClipboardData(
-//                 text: malayalamManager.fmlTextContent,
-//               ));
-//             },
-//           ),
-//           NormalButton(
-//             title: 'Copy to MLKV',
-//             onPressed: () {
-//               malayalamManager.updateFmlText(uniController.text);
-//               Clipboard.setData(ClipboardData(
-//                 text: malayalamManager.mlkvTextContent,
-//               ));
-//             },
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

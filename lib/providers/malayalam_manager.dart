@@ -168,48 +168,39 @@ class MalayalamManager with ChangeNotifier {
 
   void updateFmlText(String unicodeMalayalam) {
     print('---updateFmlText--');
+
+    print(unicodeMalayalam);
     _fmlText = '';
     String _lastLetter;
     for (var i = 0; i < unicodeMalayalam.length; i++) {
       String resultLetter;
-//
+
       if (fmlReference['vowels'].containsKey(unicodeMalayalam[i])) {
         resultLetter = fmlReference['vowels'][unicodeMalayalam[i]];
         _fmlText = _fmlText + resultLetter;
         _lastLetter = resultLetter;
-        // //print("---_lastLetter : " + _lastLetter);
-//
       } else if (fmlReference['vowelsSymbolsRight']
           .containsKey(unicodeMalayalam[i])) {
         resultLetter = fmlReference['vowelsSymbolsRight'][unicodeMalayalam[i]];
         _fmlText = _fmlText + resultLetter;
         _lastLetter = _lastLetter + resultLetter;
-        // //print("---_lastLetter : " + _lastLetter);
-//
       } else if (fmlReference['vowelsSymbolsLeft']
           .containsKey(unicodeMalayalam[i])) {
         resultLetter = fmlReference['vowelsSymbolsLeft'][unicodeMalayalam[i]];
         _fmlText = removeNcharacters(_lastLetter.length, _fmlText);
         _fmlText = _fmlText + resultLetter + _lastLetter;
-
-//
       } else if (fmlReference['vowelsSymbolsAround']
           .containsKey(unicodeMalayalam[i])) {
         resultLetter = fmlReference['vowelsSymbolsAround'][unicodeMalayalam[i]];
         _fmlText = removeNcharacters(_lastLetter.length, _fmlText);
         //adding left vowel symbol + letter + deergham
         _fmlText = _fmlText + resultLetter + _lastLetter + 'm';
-
-//
       } else if (fmlReference['consonants'].containsKey(unicodeMalayalam[i])) {
         resultLetter = fmlReference['consonants'][unicodeMalayalam[i]];
         _fmlText = _fmlText + resultLetter;
         _lastLetter = resultLetter;
-        // //print("---_lastLetter : " + _lastLetter);
         //
       } else if (unicodeMalayalam[i] == '്') {
-        //print('in chandrakkala testing');
-        //print(_lastLetter + 'v' + unicodeMalayalam[i + 1]);
         try {
           // checking nte combination
           if (_lastLetter == '\\' && unicodeMalayalam[i + 1] == 'റ') {
@@ -227,11 +218,9 @@ class MalayalamManager with ChangeNotifier {
             //print('in koottaksharam testing');
             resultLetter = fmlReference['koottaksharam']
                 [_lastLetter + 'v' + unicodeMalayalam[i + 1]];
-            //print('ResultLetter is: ' + resultLetter);
             _fmlText = removeNcharacters(_lastLetter.length, _fmlText);
             _fmlText = _fmlText + resultLetter;
             _lastLetter = resultLetter;
-            //print('LastLetter is: ' + _lastLetter);
             i = i + 1;
           }
           //check whether it makes the last letter, kya or kwa by checking the next letter
