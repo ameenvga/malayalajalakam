@@ -145,6 +145,7 @@ class TopToolBar extends StatelessWidget {
               uniController.text = text;
             },
           ),
+          SizedBox(width: 50),
           NormalButton(
             title: 'Clear',
             onPressed: () {

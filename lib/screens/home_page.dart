@@ -22,7 +22,10 @@ class _HomePageState extends State<HomePage> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     AppBar appBar = AppBar(
-      leading: Icon(Icons.ac_unit),
+      leading: Image.asset(
+        'assets/images/appicon_purple.jpg',
+        scale: 2,
+      ),
       title: Text('മലയാള ജാലകം‌'),
       actions: [],
     );
