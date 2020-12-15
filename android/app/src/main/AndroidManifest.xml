@@ -2,7 +2,7 @@
     package="com.example.malayalajalakam">
    <application
         android:label="malayalajalakam"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/appicon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

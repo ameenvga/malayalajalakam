@@ -39,7 +39,6 @@ class MyApp extends StatelessWidget {
               fontSize: 20.0,
               color: Colors.black87,
               fontFamily: 'NotoSansMalayalam',
-              // fontWeight: FontWeight.bold,
             ),
           )),
       home: HomePage(),
