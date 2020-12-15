@@ -142,7 +142,12 @@ class TopToolBar extends StatelessWidget {
               String text =
                   await Provider.of<FileManager>(context, listen: false)
                       .reloadFile();
-              uniController.text = text;
+              uniController.value = uniController.value.copyWith(
+                text: text,
+                composing: TextRange.empty,
+                selection: TextSelection(
+                    baseOffset: text.length, extentOffset: text.length),
+              );
             },
           ),
           SizedBox(width: 50),
