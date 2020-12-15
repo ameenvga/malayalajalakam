@@ -109,6 +109,25 @@ class TopToolBar extends StatelessWidget {
               }
             },
           ),
+          NormalButton(
+            title: '> Unicode',
+            onPressed: () {
+              try {
+                var text = uniController.text;
+                Clipboard.setData(ClipboardData(
+                  text: text,
+                ));
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                  'Successfully copied the Unicode text!',
+                  textAlign: TextAlign.center,
+                )));
+              } on Exception catch (_) {
+                print(_);
+              }
+            },
+          ),
           IconButton(
             icon: Icon(Icons.save),
             onPressed: () async {
@@ -125,7 +144,18 @@ class TopToolBar extends StatelessWidget {
                       .reloadFile();
               uniController.text = text;
             },
-          )
+          ),
+          NormalButton(
+            title: 'Clear',
+            onPressed: () {
+              try {
+                uniController.text = '';
+                unicodeManager.unicodeText = '';
+              } on Exception catch (_) {
+                print(_);
+              }
+            },
+          ),
         ],
       ),
     );
