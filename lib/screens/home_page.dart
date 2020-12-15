@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
 
     AppBar appBar = AppBar(
       leading: Icon(Icons.ac_unit),
-      title: Text('MalayalaJalakam'),
+      title: Text('മലയാള ജാലകം‌'),
       actions: [],
     );
 

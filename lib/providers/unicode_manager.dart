@@ -575,6 +575,11 @@ class UnicodeManager with ChangeNotifier {
     return _unicodeText;
   }
 
+  set unicodeText(String txt) {
+    _unicodeText = txt;
+    notifyListeners();
+  }
+
   String get unicodeTextContent => _unicodeText;
 
   String replaceRange(
