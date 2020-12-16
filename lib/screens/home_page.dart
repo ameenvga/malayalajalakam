@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
         'assets/images/appicon_purple.jpg',
         scale: 2,
       ),
-      title: Text('മലയാള ജാലകം‌'),
+      title: Text('മലയാള ജാലകം‌ v1.1.1'),
       actions: [],
     );
 
