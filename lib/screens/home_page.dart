@@ -26,7 +26,11 @@ class _HomePageState extends State<HomePage> {
         'assets/images/appicon_purple.jpg',
         scale: 2,
       ),
-      title: Text('മലയാള ജാലകം‌'),
+      title: Text('മലയാള ജാലകം‌',
+          style: Theme.of(context)
+              .textTheme
+              .headline2
+              .copyWith(color: Colors.white)),
       actions: [],
     );
 
