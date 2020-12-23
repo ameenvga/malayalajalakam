@@ -6,6 +6,13 @@ var logger = Logger();
 
 class UnicodeManager with ChangeNotifier {
   double _uniFontSize = 20;
+  bool _isEngOn = false;
+
+  bool get isEngOn => _isEngOn;
+
+  void switchIsEngOn() {
+    _isEngOn = !_isEngOn;
+  }
 
   double get uniFontSize => _uniFontSize;
 

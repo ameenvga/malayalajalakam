@@ -11,8 +11,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool _isEngOn;
   @override
   void initState() {
+    _isEngOn = false;
     super.initState();
   }
 
@@ -31,7 +33,19 @@ class _HomePageState extends State<HomePage> {
               .textTheme
               .headline2
               .copyWith(color: Colors.white)),
-      actions: [],
+      actions: [
+        Switch.adaptive(
+          activeColor: Colors.amber,
+          value: _isEngOn,
+          onChanged: (value) {
+            setState(() {
+              _isEngOn = !_isEngOn;
+              Provider.of<UnicodeManager>(context, listen: false)
+                  .switchIsEngOn();
+            });
+          },
+        )
+      ],
     );
 
     return Scaffold(

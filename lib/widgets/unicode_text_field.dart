@@ -18,7 +18,10 @@ class UnicodeTextField extends StatelessWidget {
     return TextField(
       autofocus: true,
       onChanged: (value) {
-        unicodeManager.updateUnicodeText(uniController);
+        if (unicodeManager.isEngOn) {
+        } else {
+          unicodeManager.updateUnicodeText(uniController);
+        }
       },
       controller: uniController,
       maxLines: 25,
