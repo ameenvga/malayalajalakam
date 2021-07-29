@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-var logger = Logger();
 
 class UnicodeManager with ChangeNotifier {
   double _uniFontSize = 20;
@@ -596,51 +593,63 @@ class UnicodeManager with ChangeNotifier {
     if (lastPart.startsWith("‌")) {
       return firstPart + lastPart;
     }
+    // else {
+    //   lastPart = "‌" + originalText.substring(end);
+    // }
     return firstPart +
-        "‌" + //adding an invisible break
+        // "‌" + //adding an invisible break
         originalText.substring(end);
   }
 
   void updateUnicodeText(TextEditingController unicodeController) {
     print('updateUnicodeText');
+    print('---------START---------');
+
     //get the whole text and get the current caret position
     _unicodeText = unicodeController.text;
     int caretPos = unicodeController.selection.baseOffset;
-
     int newCaretPos; //using to get the later position
-
+    print('starting pos >>> ' + caretPos.toString());
     //select the last five letters and search for the combination
     for (var i = 5; i > 0; i--) {
+      print(" >> for loop <<");
       try {
         var searchLetter = _unicodeText.substring(caretPos - i, caretPos);
         // print(unicodeText.substring(caretPos - i, caretPos));
         //if found a combination remove that much letters from the string and..
         if (uniReference['letters'].containsKey(searchLetter)) {
           String resultLetter = uniReference['letters'][searchLetter];
-
           _unicodeText =
               replaceRange(_unicodeText, caretPos - i, caretPos, resultLetter);
           // unicodeText =
           //     unicodeText.replaceAll("‌", ""); //removing all invisible break
           //getting the new caret position
           newCaretPos = caretPos - i + resultLetter.length;
-          unicodeController.selection =
-              TextSelection.fromPosition(TextPosition(offset: newCaretPos));
+          print('Caret pos>>> ' + newCaretPos.toString());
+          unicodeController.selection = TextSelection(
+              baseOffset: newCaretPos,
+              extentOffset: newCaretPos,
+              affinity: TextAffinity.downstream);
         }
       } catch (e) {}
     }
 
     try {
+      print(" >> second try block <<");
       if (newCaretPos != null) {
+        print('New Caret pos>>> ' + newCaretPos.toString());
         unicodeController.value = unicodeController.value.copyWith(
           text: _unicodeText,
           composing: TextRange.empty,
-          selection:
-              TextSelection(baseOffset: newCaretPos, extentOffset: newCaretPos),
+          selection: TextSelection(
+              baseOffset: newCaretPos,
+              extentOffset: newCaretPos,
+              affinity: TextAffinity.downstream),
         );
       }
     } on Exception catch (e) {
       print(e);
     }
+    print('---------END---------');
   }
 }
