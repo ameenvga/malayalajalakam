@@ -609,35 +609,38 @@ class UnicodeManager with ChangeNotifier {
     _unicodeText = unicodeController.text;
     int caretPos = unicodeController.selection.baseOffset;
     int newCaretPos; //using to get the later position
-    print('starting pos >>> ' + caretPos.toString());
+    print('initial pos >>> ' + caretPos.toString());
     //select the last five letters and search for the combination
     for (var i = 5; i > 0; i--) {
-      print(" >> for loop <<");
       try {
         var searchLetter = _unicodeText.substring(caretPos - i, caretPos);
         // print(unicodeText.substring(caretPos - i, caretPos));
         //if found a combination remove that much letters from the string and..
         if (uniReference['letters'].containsKey(searchLetter)) {
+          print('key letter length > ' + searchLetter + ' > ' + i.toString());
           String resultLetter = uniReference['letters'][searchLetter];
+          print('value letter length > ' +
+              resultLetter +
+              ' > ' +
+              resultLetter.length.toString());
           _unicodeText =
               replaceRange(_unicodeText, caretPos - i, caretPos, resultLetter);
           // unicodeText =
           //     unicodeText.replaceAll("‌", ""); //removing all invisible break
           //getting the new caret position
           newCaretPos = caretPos - i + resultLetter.length;
-          print('Caret pos>>> ' + newCaretPos.toString());
+          print('final pos >>> ' + newCaretPos.toString());
           unicodeController.selection = TextSelection(
               baseOffset: newCaretPos,
               extentOffset: newCaretPos,
               affinity: TextAffinity.downstream);
+          break;
         }
       } catch (e) {}
     }
 
     try {
-      print(" >> second try block <<");
       if (newCaretPos != null) {
-        print('New Caret pos>>> ' + newCaretPos.toString());
         unicodeController.value = unicodeController.value.copyWith(
           text: _unicodeText,
           composing: TextRange.empty,
