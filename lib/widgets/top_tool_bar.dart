@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
 import '../providers/file_manager.dart';
 import '../providers/malayalam_manager.dart';
 import '../providers/unicode_manager.dart';
-import 'package:provider/provider.dart';
-
 import 'normal_button.dart';
 
 class TopToolBar extends StatelessWidget {
   TopToolBar({
-    this.uniController,
-    @required this.unicodeManager,
-    @required this.malayalamManager,
+    required this.uniController,
+    required this.unicodeManager,
+    required this.malayalamManager,
   });
 
   final UnicodeManager unicodeManager;
@@ -47,15 +47,12 @@ class TopToolBar extends StatelessWidget {
                     return Container(
                         width: MediaQuery.of(context).size.width * 0.5,
                         child: AlertDialog(
-                          title: Container(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              child: Text('Converted FML Text')),
+                          title: Container(width: MediaQuery.of(context).size.width * 0.5, child: Text('Converted FML Text')),
                           content: TextField(
                             maxLines: 20,
                             minLines: 5,
-                            controller: TextEditingController(
-                                text: malayalamManager.fmlTextContent),
-                            style: Theme.of(context).textTheme.headline1,
+                            controller: TextEditingController(text: malayalamManager.fmlTextContent),
+                            style: Theme.of(context).textTheme.displayLarge,
                           ),
                           actions: [
                             NormalButton(
@@ -132,21 +129,17 @@ class TopToolBar extends StatelessWidget {
             icon: Icon(Icons.save),
             onPressed: () async {
               var text = unicodeManager.unicodeTextContent;
-              await Provider.of<FileManager>(context, listen: false)
-                  .saveThisFileToSharedPref(text);
+              await Provider.of<FileManager>(context, listen: false).saveThisFileToSharedPref(text);
             },
           ),
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () async {
-              String text =
-                  await Provider.of<FileManager>(context, listen: false)
-                      .reloadFile();
+              String text = await Provider.of<FileManager>(context, listen: false).reloadFile();
               uniController.value = uniController.value.copyWith(
                 text: text,
                 composing: TextRange.empty,
-                selection: TextSelection(
-                    baseOffset: text.length, extentOffset: text.length),
+                selection: TextSelection(baseOffset: text.length, extentOffset: text.length),
               );
             },
           ),

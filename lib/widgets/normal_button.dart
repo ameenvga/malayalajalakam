@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class NormalButton extends StatelessWidget {
-  final Function onPressed;
+  final VoidCallback onPressed;
   final String title;
 
-  NormalButton({this.title, this.onPressed});
+  NormalButton({required this.title, required this.onPressed});
   @override
   Widget build(BuildContext context) {
     ButtonStyle style = OutlinedButton.styleFrom(

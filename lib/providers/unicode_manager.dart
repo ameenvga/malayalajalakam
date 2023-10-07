@@ -586,8 +586,7 @@ class UnicodeManager with ChangeNotifier {
 
   String get unicodeTextContent => _unicodeText;
 
-  String replaceRange(
-      String originalText, int start, int end, String replText) {
+  String replaceRange(String originalText, int start, int end, String replText) {
     String firstPart = originalText.substring(0, start) + replText;
     String lastPart = originalText.substring(end);
     if (lastPart.startsWith("‌")) {
@@ -608,7 +607,7 @@ class UnicodeManager with ChangeNotifier {
     //get the whole text and get the current caret position
     _unicodeText = unicodeController.text;
     int caretPos = unicodeController.selection.baseOffset;
-    int newCaretPos; //using to get the later position
+    late int newCaretPos; //using to get the later position
     print('initial pos >>> ' + caretPos.toString());
     //select the last five letters and search for the combination
     for (var i = 5; i > 0; i--) {
@@ -616,40 +615,28 @@ class UnicodeManager with ChangeNotifier {
         var searchLetter = _unicodeText.substring(caretPos - i, caretPos);
         // print(unicodeText.substring(caretPos - i, caretPos));
         //if found a combination remove that much letters from the string and..
-        if (uniReference['letters'].containsKey(searchLetter)) {
+        if (uniReference['letters']!.containsKey(searchLetter)) {
           print('key letter length > ' + searchLetter + ' > ' + i.toString());
-          String resultLetter = uniReference['letters'][searchLetter];
-          print('value letter length > ' +
-              resultLetter +
-              ' > ' +
-              resultLetter.length.toString());
-          _unicodeText =
-              replaceRange(_unicodeText, caretPos - i, caretPos, resultLetter);
+          String resultLetter = uniReference['letters']![searchLetter];
+          print('value letter length > ' + resultLetter + ' > ' + resultLetter.length.toString());
+          _unicodeText = replaceRange(_unicodeText, caretPos - i, caretPos, resultLetter);
           // unicodeText =
           //     unicodeText.replaceAll("‌", ""); //removing all invisible break
           //getting the new caret position
           newCaretPos = caretPos - i + resultLetter.length;
           print('final pos >>> ' + newCaretPos.toString());
-          unicodeController.selection = TextSelection(
-              baseOffset: newCaretPos,
-              extentOffset: newCaretPos,
-              affinity: TextAffinity.downstream);
+          unicodeController.selection = TextSelection(baseOffset: newCaretPos, extentOffset: newCaretPos, affinity: TextAffinity.downstream);
           break;
         }
       } catch (e) {}
     }
 
     try {
-      if (newCaretPos != null) {
-        unicodeController.value = unicodeController.value.copyWith(
-          text: _unicodeText,
-          composing: TextRange.empty,
-          selection: TextSelection(
-              baseOffset: newCaretPos,
-              extentOffset: newCaretPos,
-              affinity: TextAffinity.downstream),
-        );
-      }
+      unicodeController.value = unicodeController.value.copyWith(
+        text: _unicodeText,
+        composing: TextRange.empty,
+        selection: TextSelection(baseOffset: newCaretPos, extentOffset: newCaretPos, affinity: TextAffinity.downstream),
+      );
     } on Exception catch (e) {
       print(e);
     }

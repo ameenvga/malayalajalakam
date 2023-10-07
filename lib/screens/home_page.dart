@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/malayalam_manager.dart';
+import '../providers/unicode_manager.dart';
 import '../widgets/top_tool_bar.dart';
 import '../widgets/unicode_text_field.dart';
-import 'package:provider/provider.dart';
-import '../providers/unicode_manager.dart';
-import '../providers/malayalam_manager.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _isEngOn;
+  late bool _isEngOn;
   @override
   void initState() {
     _isEngOn = false;
@@ -28,11 +29,7 @@ class _HomePageState extends State<HomePage> {
         'assets/images/appicon_purple.jpg',
         scale: 2,
       ),
-      title: Text('മലയാള ജാലകം v1.1.3‌',
-          style: Theme.of(context)
-              .textTheme
-              .headline2
-              .copyWith(color: Colors.white)),
+      title: Text('മലയാള ജാലകം v1.1.3‌', style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Colors.white)),
       actions: [
         Switch.adaptive(
           activeColor: Colors.amber,
@@ -40,8 +37,7 @@ class _HomePageState extends State<HomePage> {
           onChanged: (value) {
             setState(() {
               _isEngOn = !_isEngOn;
-              Provider.of<UnicodeManager>(context, listen: false)
-                  .switchIsEngOn();
+              Provider.of<UnicodeManager>(context, listen: false).switchIsEngOn();
             });
           },
         ),
@@ -79,18 +75,14 @@ class _WorkAreaState extends State<WorkArea> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     final unicodeManager = Provider.of<UnicodeManager>(context);
-    final malayalamManager =
-        Provider.of<MalayalamManager>(context, listen: false);
+    final malayalamManager = Provider.of<MalayalamManager>(context, listen: false);
     return Container(
       width: screenWidth > 1600 ? 1600 : screenWidth,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TopToolBar(
-              uniController: uniController,
-              unicodeManager: unicodeManager,
-              malayalamManager: malayalamManager),
+          TopToolBar(uniController: uniController, unicodeManager: unicodeManager, malayalamManager: malayalamManager),
           Container(
             height: screenHeight * 0.8,
             color: Colors.white,

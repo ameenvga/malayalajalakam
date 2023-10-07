@@ -36,10 +36,7 @@ class UnicodeTextField extends StatelessWidget {
       ),
       readOnly: false,
       cursorColor: Colors.blue,
-      style: Theme.of(context)
-          .textTheme
-          .headline2
-          .copyWith(fontSize: unicodeManager.uniFontSize),
+      style: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: unicodeManager.uniFontSize),
     );
   }
 }

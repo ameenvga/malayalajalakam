@@ -171,32 +171,29 @@ class MalayalamManager with ChangeNotifier {
 
     print(unicodeMalayalam);
     _fmlText = '';
-    String _lastLetter;
+    late String _lastLetter;
     for (var i = 0; i < unicodeMalayalam.length; i++) {
-      String resultLetter;
+      late String resultLetter;
 
-      if (fmlReference['vowels'].containsKey(unicodeMalayalam[i])) {
-        resultLetter = fmlReference['vowels'][unicodeMalayalam[i]];
+      if (fmlReference['vowels']!.containsKey(unicodeMalayalam[i])) {
+        resultLetter = fmlReference['vowels']![unicodeMalayalam[i]];
         _fmlText = _fmlText + resultLetter;
         _lastLetter = resultLetter;
-      } else if (fmlReference['vowelsSymbolsRight']
-          .containsKey(unicodeMalayalam[i])) {
-        resultLetter = fmlReference['vowelsSymbolsRight'][unicodeMalayalam[i]];
+      } else if (fmlReference['vowelsSymbolsRight']!.containsKey(unicodeMalayalam[i])) {
+        resultLetter = fmlReference['vowelsSymbolsRight']![unicodeMalayalam[i]];
         _fmlText = _fmlText + resultLetter;
         _lastLetter = _lastLetter + resultLetter;
-      } else if (fmlReference['vowelsSymbolsLeft']
-          .containsKey(unicodeMalayalam[i])) {
-        resultLetter = fmlReference['vowelsSymbolsLeft'][unicodeMalayalam[i]];
+      } else if (fmlReference['vowelsSymbolsLeft']!.containsKey(unicodeMalayalam[i])) {
+        resultLetter = fmlReference['vowelsSymbolsLeft']![unicodeMalayalam[i]];
         _fmlText = removeNcharacters(_lastLetter.length, _fmlText);
         _fmlText = _fmlText + resultLetter + _lastLetter;
-      } else if (fmlReference['vowelsSymbolsAround']
-          .containsKey(unicodeMalayalam[i])) {
-        resultLetter = fmlReference['vowelsSymbolsAround'][unicodeMalayalam[i]];
+      } else if (fmlReference['vowelsSymbolsAround']!.containsKey(unicodeMalayalam[i])) {
+        resultLetter = fmlReference['vowelsSymbolsAround']![unicodeMalayalam[i]];
         _fmlText = removeNcharacters(_lastLetter.length, _fmlText);
         //adding left vowel symbol + letter + deergham
         _fmlText = _fmlText + resultLetter + _lastLetter + 'm';
-      } else if (fmlReference['consonants'].containsKey(unicodeMalayalam[i])) {
-        resultLetter = fmlReference['consonants'][unicodeMalayalam[i]];
+      } else if (fmlReference['consonants']!.containsKey(unicodeMalayalam[i])) {
+        resultLetter = fmlReference['consonants']![unicodeMalayalam[i]];
         _fmlText = _fmlText + resultLetter;
         _lastLetter = resultLetter;
         //
@@ -213,11 +210,9 @@ class MalayalamManager with ChangeNotifier {
           // got a chandrakkala from sentence?
           //Checking whether it makes a kootaksharam
           //if available, remove the last letter, and replace the letter from koottaksharam
-          else if (fmlReference['koottaksharam']
-              .containsKey(_lastLetter + 'v' + unicodeMalayalam[i + 1])) {
+          else if (fmlReference['koottaksharam']!.containsKey(_lastLetter + 'v' + unicodeMalayalam[i + 1])) {
             //print('in koottaksharam testing');
-            resultLetter = fmlReference['koottaksharam']
-                [_lastLetter + 'v' + unicodeMalayalam[i + 1]];
+            resultLetter = fmlReference['koottaksharam']![_lastLetter + 'v' + unicodeMalayalam[i + 1]];
             _fmlText = removeNcharacters(_lastLetter.length, _fmlText);
             _fmlText = _fmlText + resultLetter;
             _lastLetter = resultLetter;
@@ -225,16 +220,13 @@ class MalayalamManager with ChangeNotifier {
           }
           //check whether it makes the last letter, kya or kwa by checking the next letter
           // and increase the value of i
-          else if (fmlReference['twoLetterConsonants']
-              .containsKey(unicodeMalayalam[i + 1])) {
-            resultLetter =
-                fmlReference['twoLetterConsonants'][unicodeMalayalam[i + 1]];
+          else if (fmlReference['twoLetterConsonants']!.containsKey(unicodeMalayalam[i + 1])) {
+            resultLetter = fmlReference['twoLetterConsonants']![unicodeMalayalam[i + 1]];
             _fmlText = _fmlText + resultLetter;
             _lastLetter = _lastLetter + resultLetter;
             i++;
-          } else if (fmlReference['praLetter']
-              .containsKey(unicodeMalayalam[i + 1])) {
-            resultLetter = fmlReference['praLetter'][unicodeMalayalam[i + 1]];
+          } else if (fmlReference['praLetter']!.containsKey(unicodeMalayalam[i + 1])) {
+            resultLetter = fmlReference['praLetter']![unicodeMalayalam[i + 1]];
             _fmlText = removeNcharacters(_lastLetter.length, _fmlText);
             _fmlText = _fmlText + resultLetter + _lastLetter;
             _lastLetter = resultLetter + _lastLetter;
@@ -248,9 +240,9 @@ class MalayalamManager with ChangeNotifier {
         } catch (e) {}
       } else if (unicodeMalayalam[i].codeUnits[0] == 8205) {
         //found a chill end, and searching for the last two letter combination
-        if (fmlReference['chills'].containsKey(_lastLetter)) {
+        if (fmlReference['chills']!.containsKey(_lastLetter)) {
           _fmlText = removeNcharacters(_lastLetter.length, _fmlText);
-          _fmlText = _fmlText + fmlReference['chills'][_lastLetter];
+          _fmlText = _fmlText + fmlReference['chills']![_lastLetter];
         }
         //
       } else {
@@ -262,7 +254,7 @@ class MalayalamManager with ChangeNotifier {
 }
 
 String removeNcharacters(int n, String text) {
-  if (text != null && text.length >= n) {
+  if (text.length >= n) {
     text = text.substring(0, text.length - n);
     return text;
   }
