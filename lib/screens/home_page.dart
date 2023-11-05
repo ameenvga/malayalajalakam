@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:malayalajalakam/screens/widgets/appbox.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/malayalam_manager.dart';
 import '../providers/unicode_manager.dart';
-import '../widgets/top_tool_bar.dart';
-import '../widgets/unicode_text_field.dart';
+import 'widgets/top_tool_bar.dart';
+import 'widgets/unicode_text_field.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,9 +22,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-
     AppBar appBar = AppBar(
       leading: Image.asset(
         'assets/images/appicon_purple.jpg',
@@ -46,18 +44,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: appBar,
-      body: SingleChildScrollView(
-        child: Container(
-          height: screenHeight,
-          width: screenWidth,
-          padding: EdgeInsets.all(10.0),
-          color: Colors.black12,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [WorkArea()],
-          ),
-        ),
-      ),
+      body: WorkArea(),
     );
   }
 }
@@ -72,26 +59,34 @@ class _WorkAreaState extends State<WorkArea> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
     final unicodeManager = Provider.of<UnicodeManager>(context);
     final malayalamManager = Provider.of<MalayalamManager>(context, listen: false);
-    return Container(
-      width: screenWidth > 1600 ? 1600 : screenWidth,
+    return AppBox(
+      widthP: 100,
+      heightP: 100,
+      minusAppBarHeight: true,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TopToolBar(uniController: uniController, unicodeManager: unicodeManager, malayalamManager: malayalamManager),
-          Container(
-            height: screenHeight * 0.8,
-            color: Colors.white,
-            padding: EdgeInsets.all(screenWidth * 0.05),
-            child: UnicodeTextField(uniController),
+          AppBox(
+            // color: Color.fromARGB(255, 152, 137, 120),
+            showColor: true,
+            heightP: 100,
+            minusAppBarHeight: true,
+            hminusPx: 70,
+            child: Container(
+                margin: EdgeInsets.all(10),
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
+                child: UnicodeTextField(uniController)),
           ),
-          Text(
-            'Developed by ameenvengara@gmail.com | www.malayalam-addon.blogspot.com for desktop version',
-            textAlign: TextAlign.center,
+          AppBox(
+            heightPx: 20,
+            child: Text(
+              'Developed by ameenvengara@gmail.com | www.malayalam-addon.blogspot.com for desktop version',
+              textAlign: TextAlign.center,
+            ),
           )
         ],
       ),

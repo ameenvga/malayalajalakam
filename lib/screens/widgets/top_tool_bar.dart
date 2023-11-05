@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:malayalajalakam/screens/widgets/appbox.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/file_manager.dart';
-import '../providers/malayalam_manager.dart';
-import '../providers/unicode_manager.dart';
+import '../../providers/file_manager.dart';
+import '../../providers/malayalam_manager.dart';
+import '../../providers/unicode_manager.dart';
 import 'normal_button.dart';
 
 class TopToolBar extends StatelessWidget {
@@ -20,8 +21,9 @@ class TopToolBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
+    return AppBox(
+      heightPx: 50,
+      widthP: 100,
       child: Row(
         children: [
           IconButton(
@@ -155,6 +157,8 @@ class TopToolBar extends StatelessWidget {
               }
             },
           ),
+          Spacer(),
+          IconButton(onPressed: () {}, icon: Icon(Icons.mobile_friendly))
         ],
       ),
     );
